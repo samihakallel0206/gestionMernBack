@@ -10,7 +10,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: true,
+    origin: [
+      "http://localhost:5173",
+      "https://coruscating-mermaid-dca2df.netlify.app/",
+    ],
     credentials: true,
   })
 );

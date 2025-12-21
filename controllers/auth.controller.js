@@ -101,11 +101,13 @@ exports.login = async (req, res) => {
     // console.log(isMatch)
     console.log(foundUser.role.titre);
     //!token
-    const token = jwt.sign(
-      { id: foundUser._id, role: foundUser.role.titre },
-      process.env.JWT_SECRET,
-      { expiresIn: "2h" }
-    );
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true, 
+      sameSite: "none", 
+      maxAge: 2 * 60 * 60 * 1000,
+    });
+
     //storetoken
     res.cookie("token", token, {
       httpOnly: true,

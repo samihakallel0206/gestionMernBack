@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "server",
   "scripts": {
-    "dev": "node server",
+    "dev": "npx nodemon server",
     "start": "node server"
   },
   "dependencies": {

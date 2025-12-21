@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "server",
   "scripts": {
-    "dev": "nodemon server",
+    "dev": "node server",
     "start": "node server"
   },
   "dependencies": {

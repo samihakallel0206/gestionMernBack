@@ -3,20 +3,37 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const removeUploadImg = require("../utils/removeUploadImg");
+const fs = require("fs");
+const path = require("path");
+
 // -----------------------REGISTER---------------
 exports.register = async (req, res) => {
   try {
     const { userName, email, password, phone, roleTitre } = req.body;
     //!image
-   const BASE_URL = `${req.protocol}://${req.get("host")}`;
+    // Utiliser BASE_URL de l'environnement en production, sinon construire dynamiquement
+    const BASE_URL = process.env.NODE_ENV === 'production' && process.env.BASE_URL 
+      ? process.env.BASE_URL 
+      : `${req.protocol}://${req.get("host")}`;
 
-   let profilePic = `${BASE_URL}/uploads/avatar.png`;
+    // Vérifier si l'avatar par défaut existe
+    const defaultAvatarPath = path.join(
+      __dirname,
+      "..",
+      "uploads",
+      "avatar.png"
+    );
+    let profilePic = `${BASE_URL}/uploads/avatar.png`;
 
-   if (req.file) {
-     profilePic = `${BASE_URL}/uploads/${req.file.filename}`;
-   }
+    // Si l'avatar par défaut n'existe pas, utiliser une URL d'image par défaut externe
+    if (!fs.existsSync(defaultAvatarPath)) {
+      profilePic = "https://via.placeholder.com/150x150/gray/white?text=User";
+    }
 
-    //   console.log(profilePic)
+    if (req.file) {
+      profilePic = `${BASE_URL}/uploads/${req.file.filename}`;
+    }
+
     //check email exist
     const existUser = await User.findOne({ email });
     if (existUser) {
@@ -83,7 +100,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     //check du email?
-    console.log(req.body)
+    console.log(req.body);
     const { email, password } = req.body;
     const foundUser = await User.findOne({ email }).populate("role");
     if (!foundUser) {

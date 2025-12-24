@@ -3,7 +3,7 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cors = require("cors");
-const fs = require("fs");
+
 const app = express();
 
 const allowedOrigins = [
@@ -15,16 +15,6 @@ const allowedOrigins = [
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// Route de fallback pour l'avatar par défaut
-app.get("/uploads/avatar.png", (req, res) => {
-  const avatarPath = path.join(__dirname, "uploads", "avatar.png");
-  res.sendFile(avatarPath, (err) => {
-    if (err) {
-      res.status(404).json({ error: "Avatar not found" });
-    }
-  });
-});
 
 app.use(
   cors({
@@ -65,25 +55,7 @@ app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/user", require("./routes/user.route"));
 app.use("/api/role", require("./routes/role.route"));
 
-// Route pour servir les images avec gestion d'erreur améliorée
-app.get("/uploads/:filename", (req, res) => {
-  const filename = req.params.filename;
-  const imagePath = path.join(__dirname, "uploads", filename);
 
-  // Vérifier si le fichier existe
-  if (fs.existsSync(imagePath)) {
-    res.sendFile(imagePath);
-  } else {
-    // Si le fichier demandé n'existe pas, servir l'avatar par défaut
-    const defaultAvatar = path.join(__dirname, "uploads", "avatar.png");
-    if (fs.existsSync(defaultAvatar)) {
-      res.sendFile(defaultAvatar);
-    } else {
-      // Si même l'avatar par défaut n'existe pas, rediriger vers une image placeholder
-      res.redirect("https://via.placeholder.com/150x150/gray/white?text=User");
-    }
-  }
-});
 
 // Health endpoint
 app.get("/health", (req, res) => {

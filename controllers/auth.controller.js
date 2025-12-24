@@ -11,30 +11,10 @@ exports.register = async (req, res) => {
   try {
     const { userName, email, password, phone, roleTitre } = req.body;
     //!image
-    // Utiliser BASE_URL de l'environnement en production, sinon construire dynamiquement
-    const BASE_URL =
-      process.env.NODE_ENV === "production" && process.env.BASE_URL
-        ? process.env.BASE_URL
-        : `${req.protocol}://${req.get("host")}`;
-
-    // Vérifier si l'avatar par défaut existe
-    const defaultAvatarPath = path.join(
-      __dirname,
-      "..",
-      "uploads",
-      "avatar.png"
-    );
-    let profilePic = `${BASE_URL}/uploads/avatar.png`;
-
-    // Si l'avatar par défaut n'existe pas, utiliser une URL d'image par défaut externe
-    if (!fs.existsSync(defaultAvatarPath)) {
-      profilePic = "https://via.placeholder.com/150x150/gray/white?text=User";
-    }
-
+    let profilePic = "/uploads/avatar.png";    
     if (req.file) {
-      profilePic = `${BASE_URL}/uploads/${req.file.filename}`;
+      profilePic = `/uploads/${req.file.filename}`;
     }
-
     //check email exist
     const existUser = await User.findOne({ email });
     if (existUser) {

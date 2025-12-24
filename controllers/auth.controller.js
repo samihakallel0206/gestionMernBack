@@ -12,9 +12,10 @@ exports.register = async (req, res) => {
     const { userName, email, password, phone, roleTitre } = req.body;
     //!image
     // Utiliser BASE_URL de l'environnement en production, sinon construire dynamiquement
-    const BASE_URL = process.env.NODE_ENV === 'production' && process.env.BASE_URL 
-      ? process.env.BASE_URL 
-      : `${req.protocol}://${req.get("host")}`;
+    const BASE_URL =
+      process.env.NODE_ENV === "production" && process.env.BASE_URL
+        ? process.env.BASE_URL
+        : `${req.protocol}://${req.get("host")}`;
 
     // Vérifier si l'avatar par défaut existe
     const defaultAvatarPath = path.join(

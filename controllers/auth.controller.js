@@ -8,12 +8,14 @@ exports.register = async (req, res) => {
   try {
     const { userName, email, password, phone, roleTitre } = req.body;
     //!image
-    const BASE_URL =
-      process.env.BASE_URL || `${req.protocol}://${req.get("host")}`;
-    let profilePic = `${BASE_URL}/uploads/avatar.png`;
-    if (req.file) {
-      profilePic = `${BASE_URL}/uploads/${req.file.filename}`;
-    }
+   const BASE_URL = `${req.protocol}://${req.get("host")}`;
+
+   let profilePic = `${BASE_URL}/uploads/avatar.png`;
+
+   if (req.file) {
+     profilePic = `${BASE_URL}/uploads/${req.file.filename}`;
+   }
+
     //   console.log(profilePic)
     //check email exist
     const existUser = await User.findOne({ email });

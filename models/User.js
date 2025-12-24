@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     phone: String,
     profilePic: {
       type: String,
-      default: "http://localhost:4700/uploads/avatar.png",
+      default: null,
     },
     role: {
       type: mongoose.Schema.Types.ObjectId,

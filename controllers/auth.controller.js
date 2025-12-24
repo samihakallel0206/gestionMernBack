@@ -98,21 +98,17 @@ exports.login = async (req, res) => {
         errors: [{ message: "Bad Credentials 2" }],
       });
     }
-    // console.log(isMatch)
-    console.log(foundUser.role.titre);
-    //!token
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true, 
-      sameSite: "none", 
-      maxAge: 2 * 60 * 60 * 1000,
-    });
+    // Génération du token JWT
+    const token = jwt.sign(
+      { id: foundUser._id, role: foundUser.role.titre },
+      process.env.JWT_SECRET,
+      { expiresIn: "2h" }
+    );
 
-    //storetoken
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: 2 * 60 * 60 * 1000, // 2h
     });
     //response
@@ -120,7 +116,6 @@ exports.login = async (req, res) => {
       success: true,
       message: "Login successfully!",
       user: foundUser,
-      //! token,
     });
   } catch (error) {
     // error
@@ -136,8 +131,8 @@ exports.logout = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
     });
     res.status(200).json({
       success: true,

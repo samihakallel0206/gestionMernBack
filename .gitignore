@@ -6,9 +6,7 @@
 # Dependencies
 node_modules/
 
-# Uploads (fichiers uploadés par les utilisateurs)
-uploads/*
-!uploads/.gitkeep
+
 
 # Logs
 logs

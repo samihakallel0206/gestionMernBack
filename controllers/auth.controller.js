@@ -65,6 +65,7 @@ exports.register = async (req, res) => {
       success: true,
       message: "User registered successfully",
       user: newUser,
+      
     });
   } catch (error) {
     //!4
@@ -112,11 +113,13 @@ exports.login = async (req, res) => {
       sameSite: "none",
       maxAge: 2 * 60 * 60 * 1000, // 2h
     });
+    console.log("User logged in:", foundUser);
     //response
     res.status(200).json({
       success: true,
       message: "Login successfully!",
       user: foundUser,
+      
     });
   } catch (error) {
     // error

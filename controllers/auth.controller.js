@@ -82,7 +82,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     //check du email?
-    console.log(req.body);
+    // console.log(req.body);
     const { email, password } = req.body;
     const foundUser = await User.findOne({ email }).populate("role");
     if (!foundUser) {

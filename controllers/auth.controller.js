@@ -104,16 +104,16 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       { id: foundUser._id, role: foundUser.role.titre },
       process.env.JWT_SECRET,
-      { expiresIn: "2h" }
+      { expiresIn: "1h" }
     );
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      maxAge: 2 * 60 * 60 * 1000, // 2h
+      maxAge: 1 * 60 * 60 * 1000, // 1h
     });
-    console.log("User logged in:", foundUser);
+    // console.log("User logged in:", foundUser);
     //response
     res.status(200).json({
       success: true,
